@@ -15,11 +15,11 @@
   },
   "dependencies": {
     "classnames": "^1.2.0",
+    "react-controllables": "^0.3.1",
     "react-tools": "^0.13.1"
   },
   "devDependencies": {
     "jsx-loader": "^0.12.2",
-    "react-controllables": "^0.3.1",
     "webpack": "^1.7.3",
     "webpack-dev-server": "^1.8.0"
   },

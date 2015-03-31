@@ -9,60 +9,115 @@ var Stepper = React.createClass({
     value: React.PropTypes.number,
     label: React.PropTypes.string,
     onValueChange: React.PropTypes.func,
-    stepSize: React.PropTypes.number,
+    step: React.PropTypes.number,
+    min: React.PropTypes.number,
+    max: React.PropTypes.number,
+    bar: React.PropTypes.bool,
   },
 
   getDefaultProps: function() {
     return {
       label: '',
       value: 0,
-      stepSize: 1,
+      step: 1,
+      bar: false,
     }
   },
 
   handleChange: function(e) {
-    if (!this.props.onValueChange) return;
+    if (!this.props.onValueChange || this.props.readonly) return;
     var value = parseInt(e.target.value, 10);
     this.props.onValueChange(value);
   },
 
   handleDownClick: function() {
-    if (!this.props.onValueChange) return;
-    var value = this.props.value - this.props.stepSize;
+    if (!this.props.onValueChange || this.props.readonly) return;
+    var value;
+    if (typeof this.props.min != 'undefined' && this.props.value - this.props.step > this.props.min) {
+      value = this.props.value - this.props.step;
+    } else if (typeof this.props.min != 'undefined') {
+      console.log('min', this.props.value - this.props.step > this.props.min);
+      value = this.props.min;
+    } else {
+      value = this.props.value - this.props.step;
+    }
     this.props.onValueChange(value);
   },
 
   handleUpClick: function() {
-    if (!this.props.onValueChange) return;
-    var value = this.props.value + this.props.stepSize;
+    if (!this.props.onValueChange || this.props.readonly) return;
+    var value;
+    if (typeof this.props.max != 'undefined' && this.props.value + this.props.step < this.props.max) {
+      value = this.props.value + this.props.step;
+    } else if (typeof this.props.max != 'undefined') {
+      value = this.props.max;
+    } else {
+      value = this.props.value + this.props.step;
+    }
     this.props.onValueChange(value);
   },
 
   render: function() {
+    var barWidth = 0;
+    if (this.props.bar) {
+      var min = this.props.min || 0;
+      var max = this.props.max || 1;
+      barWidth = (this.props.value - min) / (max - min) * 100;
+      console.log('barwidth', barWidth);
+    }
     var styles = {
+      wrapper: {
+        position: 'relative',
+        overflow: 'hidden',
+      },
+      bar: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        width: barWidth + '%',
+        opacity: .5,
+      },
       input: {
-        border: 0
+        border: 0,
+        position: 'relative',
+        zIndex: 1,
+        backgroundColor: 'transparent'
       },
       button: {
         width: '3rem'
       }
     };
+    var bar = this.props.bar ? <div style={styles.bar} className="bg-aqua" />: false;
     return (
       <div className={this.props.className}>
-        <label>{this.props.label}</label>
-        <div className="flex flex-stretch border rounded xoverflow-hidden">
-          <input type="number"
-            value={this.props.value}
-            onChange={this.handleChange}
-            style={styles.input}
-            className="flex-auto m0 field-light not-rounded" />
+        <label htmlFor={this.props.name} className="h5 bold">{this.props.label}</label>
+        <div className="flex flex-stretch border rounded">
+          <div className="flex-auto" style={styles.wrapper}>
+            {bar}
+            <input type="number"
+              value={this.props.value}
+              onChange={this.handleChange}
+              style={styles.input}
+              min={this.props.min}
+              max={this.props.max}
+              step={this.props.step}
+              name={this.props.name}
+              disabled={this.props.disabled}
+              readOnly={this.props.readOnly}
+              required={this.props.required}
+              placeholder={this.props.placeholder}
+              className="full-width m0 field-light rounded-left" />
+          </div>
           <button
             style={styles.button}
             className="h2 bold button button-transparent border-left"
+            disabled={this.props.disabled}
             onClick={this.handleDownClick}>-</button>
           <button
             style={styles.button}
             className="h2 bold button button-transparent border-left"
+            disabled={this.props.disabled}
             onClick={this.handleUpClick}>+</button>
         </div>
       </div>
