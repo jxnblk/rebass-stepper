@@ -3,7 +3,7 @@
 
 React number stepper component
 
-http://jxnblk.com/rebass-stepper/demo
+http://jxnblk.com/rebass-stepper
 
 ## Getting Started
 

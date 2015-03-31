@@ -5,7 +5,8 @@
   "scripts": {
     "jsx": "jsx -x jsx src .",
     "watch:jsx": "jsx -x jsx -w src .",
-    "dev": "webpack-dev-server --progress --colors --content-base demo/",
+    "dev": "webpack-dev-server --progress --colors",
+    "prod": "webpack -p --progress --colors",
     "start": "npm run watch:jsx & npm run dev"
   },
   "author": "Brent Jackson",
@@ -15,6 +16,7 @@
   },
   "dependencies": {
     "classnames": "^1.2.0",
+    "colorbass": "^1.0.0",
     "react-controllables": "^0.3.1",
     "react-tools": "^0.13.1"
   },

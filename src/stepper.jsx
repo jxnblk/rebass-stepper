@@ -13,6 +13,7 @@ var Stepper = React.createClass({
     min: React.PropTypes.number,
     max: React.PropTypes.number,
     bar: React.PropTypes.bool,
+    color: React.PropTypes.string,
   },
 
   getDefaultProps: function() {
@@ -21,6 +22,7 @@ var Stepper = React.createClass({
       value: 0,
       step: 1,
       bar: false,
+      color: 'blue'
     }
   },
 
@@ -36,7 +38,6 @@ var Stepper = React.createClass({
     if (typeof this.props.min != 'undefined' && this.props.value - this.props.step > this.props.min) {
       value = this.props.value - this.props.step;
     } else if (typeof this.props.min != 'undefined') {
-      console.log('min', this.props.value - this.props.step > this.props.min);
       value = this.props.min;
     } else {
       value = this.props.value - this.props.step;
@@ -63,7 +64,6 @@ var Stepper = React.createClass({
       var min = this.props.min || 0;
       var max = this.props.max || 1;
       barWidth = (this.props.value - min) / (max - min) * 100;
-      console.log('barwidth', barWidth);
     }
     var styles = {
       wrapper: {
@@ -76,7 +76,7 @@ var Stepper = React.createClass({
         left: 0,
         bottom: 0,
         width: barWidth + '%',
-        opacity: .5,
+        opacity: .25,
       },
       input: {
         border: 0,
@@ -88,7 +88,7 @@ var Stepper = React.createClass({
         width: '3rem'
       }
     };
-    var bar = this.props.bar ? <div style={styles.bar} className="bg-aqua" />: false;
+    var bar = this.props.bar ? <div style={styles.bar} className={'bg-'+this.props.color} />: false;
     return (
       <div className={this.props.className}>
         <label htmlFor={this.props.name} className="h5 bold">{this.props.label}</label>
