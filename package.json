@@ -2,6 +2,7 @@
   "name": "rebass-stepper",
   "version": "1.0.0",
   "description": "React number stepper component",
+  "main": "stepper.js",
   "scripts": {
     "jsx": "jsx -x jsx src .",
     "watch:jsx": "jsx -x jsx -w src .",
